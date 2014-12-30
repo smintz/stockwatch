@@ -67,10 +67,9 @@ rsu.controller('RsuListCtrl', ['$scope', '$http', function ($scope, $http) {
   }
 
   $scope.loadStockValues = function() {
-    $http.get('http://finance.google.com/finance/info?client=ig&q=FB,MSFT,GOOG,AAPL,RHT').
+    $http.jsonp('http://finance.google.com/finance/info?client=ig&q=FB,MSFT,GOOG,AAPL,RHT&callback=JSON_CALLBACK').
     success(function(data, status, headers, config){
-      data = JSON.parse(data.replace(/\/\//, ''));
-        data.forEach(function(item) {
+      data.forEach(function(item) {
         $scope.stock_values[item.t] = parseFloat(item.l_cur);
       });
     });
