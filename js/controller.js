@@ -64,10 +64,11 @@ rsu.controller('RsuListCtrl', ['$scope', '$http', function ($scope, $http) {
   $scope.saveGrants = function(){
     // console.log('Save');
     document.cookie = 'grants=' + JSON.stringify($scope.grants);
+    $scope.loadStockValues();
   }
 
   $scope.loadStockValues = function() {
-    $http.jsonp('http://finance.google.com/finance/info?client=ig&q=FB,MSFT,GOOG,AAPL,RHT&callback=JSON_CALLBACK').
+    $http.jsonp('http://finance.google.com/finance/info?client=ig&q=FB&callback=JSON_CALLBACK').
     success(function(data, status, headers, config){
       data.forEach(function(item) {
         $scope.stock_values[item.t] = parseFloat(item.l_cur);
