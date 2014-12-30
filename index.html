@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" ng-app="RsuApp" ng-controller="RsuListCtrl" data-ng-init="init()">
+<head>
+  <meta charset="utf-8">
+  <title ng-bind-template="{{methods.grant_taxed(grants[0]) | currency}}">My HTML File</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="js/controller.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="#" method="get" accept-charset="utf-8">
+        <div class="form-group col-xs-6">
+          <label for="stock">Stock Value</label>
+          <input type="text" id="stock" class="form-control" ng-model="stock_value"/>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <span ng-repeat="(symbol, value) in stock_values">{{symbol}} {{value}} |</span><br />
+      <span ng-repeat="(symbol, value) in currency_convert">{{symbol}} {{value}} |</span>
+    </div>
+  </div>
+  <div class="row" ng-repeat="grant in grants">
+    <div class="col-md-12 panel panel-default">
+      <div class="row panel-body">
+        <div class="col-md-3">{{grant.date}}</div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="amount">Amount of shares</label>
+            <input id="amount" type="text" class="empty_input form-control" ng-model="grant.amount" ng-keyup="saveGrants()"/>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="value_at_grant_date">Value at grant day</label>
+            <input id="value_at_grant_date" type="text" class="empty_input form-control" ng-model="grant.value_at_grant_date" ng-keyup="saveGrants()"/>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="stock_symbol">Stock Symbol</label>
+            <select id="stock_symbol" class="form-control empty_input" ng-model="grant.stock_symbol">
+              <option ng-repeat="(symbol, value) in stock_values" value="{{symbol}}">{{symbol}} {{value | currency}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row panel-footer">
+        <div class="col-md-7">
+        </div>
+        <div class="col-md-2">
+          <h6>Grant Value:
+          {{methods.grant_value(grant) | currency}}</h6>
+        </div>
+        <div class="col-md-3">
+          <h6>After Tax:
+          {{methods.grant_taxed(grant) | currency}}
+          ({{methods.currencyConvert('ILS', methods.grant_taxed(grant)) | currency:"ILS"}})</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary" ng-click="addGrant()">Add</button>
+      <button class="btn" ng-click="saveGrants()">Save</button>
+      <button class="btn" ng-click="loadGrants()">Load</button>
+      <button class="btn" ng-click="loadStockValues()">Reload Stock Values</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
